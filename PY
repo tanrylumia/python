@@ -1,0 +1,38 @@
+import serial
+
+NUM="003"
+MATH="08" #月
+DAY="17" #日
+TIME="14:55:29"
+MODO="儿童"
+R=[0.75,-0.25,167]
+L=[1,-0.25,167]
+
+
+ser=serial.Serial( #下面这些参数根据情况修改
+          port="COM6",
+          baudrate=115200,
+          parity=serial.PARITY_NONE,
+          stopbits=serial.STOPBITS_ONE,
+          bytesize=serial.EIGHTBITS,
+          timeout=2)
+
+ser.write("           莫廷影像".encode("GB2312"))
+ser.write(b'\x0a')
+ser.write(("编号:2020"+MATH+DAY+NUM).encode("GB2312"))
+ser.write(b'\x0a')
+ser.write(("模式:"+MODO).encode("GB2312"))
+ser.write(b'\x0a')
+ser.write(b'\x0a')
+ser.write(("R 10  S%+-.2f  C%+-.2f  A%3d"%(R[0],R[1],R[2])).encode("GB2312"))
+ser.write(b'\x0a')
+ser.write(("L 10  S%+-.2f  C%+-.2f  A%3d"%(L[0],L[1],L[2])).encode("GB2312"))
+ser.write(b'\x0a')
+ser.write(b'\x0a')
+ser.write(("打印时间:2020-"+MATH+"-"+DAY+" "+TIME).encode("GB2312"))
+ser.write(b'\x0a')
+ser.write(b'\x0a')
+ser.write(b'\x0a')
+ser.write(b'\x0a')
+
+ser.close()
